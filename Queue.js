@@ -9,6 +9,7 @@ class Queue {
   constructor() {
     this.first = null;
     this.last = null;
+    this.length = 0 ;
   }
   //O(1) constant time
   enqueue(data) {
@@ -22,6 +23,7 @@ class Queue {
     }
     //make the new code the last item on the queue
     this.last = node;
+    this.length ++;
   }
   //O(1) constant time
   dequeue() {
@@ -35,7 +37,9 @@ class Queue {
     if (node === this.last) {
       this.last = null;
     }
+    this.length --;
     return node.value;
+    
   }
 }
 
@@ -86,7 +90,7 @@ function display(queue) {
   if (currQueue === null) {
     return;
   }
-  while(currQueue !== null){
+  while (currQueue !== null) {
     console.log(currQueue.value);
     currQueue = currQueue.next;
   }
@@ -108,3 +112,81 @@ function display(queue) {
 //Female dancer is Beyonce, and the male dancer is Sherlock
 //There are 2 male dancers waiting to dance
 
+const female = new Queue();
+const male = new Queue();
+
+
+function dancePairng(people) {
+
+  people.forEach((person) => {
+    if (person[0] === "F") {
+      female.enqueue(person.split(' ')[1]);
+    } else {
+      male.enqueue(person.split(' ')[1]);
+    }
+    if (male.first && female.first) {
+      let maleDancer = male.dequeue();
+      let femaleDancer = female.dequeue();
+      console.log(
+        `Female dancer is ${femaleDancer}, and the male dancer is ${maleDancer}`
+      );
+    }
+  });
+  if (male.length > 0) {
+    console.log(`There are ${male.length} male dancer waiting to dance.`);
+  } else if (female.length > 0) {
+    console.log(`There are ${female.length} male dancer waiting to dance.`);
+  }
+}
+
+console.log(
+  dancePairng([
+    "F Jane",
+    "M Frank",
+    "M John",
+    "M Sherlock",
+    "F Madonna",
+    "M David",
+    "M Christopher",
+    "F Beyonce",
+  ])
+);
+
+console.log(
+  dancePairng([
+    "F Jane",
+    "M Frank",
+    "M John",
+    "M Sherlock",
+    "F Madonna",
+    "M David",
+    "M Christopher",
+    "F Beyonce",
+    "F Jenny",
+    "F Helen",
+    "F Anna",
+  ])
+);
+// Q10 The Ophidian Bank
+
+// Write a representation of this queue; 25% of the time (random), a customer's paperwork isn't quite right, and it's back to the end of the queue.
+
+function ophidianBank(queue){
+  while(queue.first){
+    let person = queue.dequeue();
+    if(Math.random() <= 1/4){
+      queue.enqueue(person);
+      console.log(`${person}'s paperwork isn't quite right, and back to the end of the queue`);
+    }
+    else{
+      console.log(`${person}'s paperwork is right`);
+    }
+  }
+}
+
+let testQueue = new Queue();
+testQueue.enqueue('Moon');
+testQueue.enqueue('James');
+testQueue.enqueue('Tim');
+
+ophidianBank(testQueue);
